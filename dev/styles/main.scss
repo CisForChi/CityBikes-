@@ -169,13 +169,8 @@ header {
 		padding-left:2rem;
 	}
 }
-h3{
-	span::after, span::before{
-		content: "↔	";
-		font-size:2rem;
-		color: lighten($colorDark,30%);
-	}
-}
+
+
 .container {
 	display: flex;
 	flex-direction: column;

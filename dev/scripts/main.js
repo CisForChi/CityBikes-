@@ -84,6 +84,8 @@ citybikes.findBikes = function(cityName) {
                     cityHref = thisArray[i].href;
                     citybikes.getBikeNetworksStations(cityHref)
                 }
+
+             
             }
         }
     });
@@ -113,7 +115,7 @@ citybikes.getCoffeeShops = function(coffee) {
 		data: {
 			reqUrl: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
 			params: {
-				key: 'AIzaSyB0nAY9VpAN-y391bAkKEaVLiNEFUay0nw',
+				key: 'AIzaSyCAmPCYRVcQE3wyMlYnO5-ocmSMxoBvxJ0',
 				location: citybikes.cafeString,
 				// example location: '43.6425662,-79.3870568',
 				radius: 500,
@@ -122,7 +124,9 @@ citybikes.getCoffeeShops = function(coffee) {
 		}
 	}).then(function(coffeeShops){
 		citybikes.cafeLocations = coffeeShops.results;
+		
 	});
+
 };
 
 citybikes.initMap = function() {
@@ -138,7 +142,7 @@ citybikes.initMap = function() {
 	    center: citybikes.cafeLatLong,
 	    zoom: twoZoom
 	});
-    var markerTwo = new google.maps.Marker({
+    const markerTwo = new google.maps.Marker({
 	    position: citybikes.cafeLatLong,
 	    map: mapCafe,
 	    title: citybikes.userInputCafe,
@@ -146,7 +150,7 @@ citybikes.initMap = function() {
     });
     // for each cafe, place a marker
     citybikes.cafeLocations.forEach(function(item){
-        var marker = new google.maps.Marker({	
+        var  marker = new google.maps.Marker({	
             position: {
             	lat:item.geometry.location.lat,
             	lng:item.geometry.location.lng
@@ -155,13 +159,21 @@ citybikes.initMap = function() {
             title: item.name,
             icon:'icons/coffeeMarker.svg'
         });
+        var infowindow = new google.maps.InfoWindow({
+  content: item.name
+  });
+
+google.maps.event.addListener(marker, 'click', function() {
+  infowindow.open(map,marker);
+  })
+
     });
 	// Bike Map
 	mapBike = new google.maps.Map(document.getElementById('mapBike'), {
 	    center: citybikes.myLatLong,
 	    zoom: twoZoom
 	});
-    var markerOne = new google.maps.Marker({
+    const markerOne = new google.maps.Marker({
 	    position: citybikes.myLatLong,
 	    map: mapBike,
 	    title: citybikes.userInputBike,
@@ -178,7 +190,16 @@ citybikes.initMap = function() {
 	        title: item.name,
 	        icon: 'icons/bikeMarker.svg'
 	    });
+	    var infowindow = new google.maps.InfoWindow({
+  content: item.name
+  });
+
+google.maps.event.addListener(marker, 'click', function() {
+  infowindow.open(map,marker);
+  });
 	});
+
+
 };
 
 $(function(){
